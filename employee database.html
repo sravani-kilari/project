@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee Database</title>
+  <style>
+    /* CSS styles for the table and form */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 2px solid black; /* Add border property for table */
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid black; /* Add border property for cells */
+    }
+
+    th {
+      font-weight: bold; /* Add bold font weight for table header */
+    }
+    
+    /* CSS styles for the submit button */
+    .submit-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .submit-container button {
+      margin-top: 10px;
+    }
+  </style>
+  <script>
+    // JavaScript code for calculating work hours
+    function calculateWorkHours() {
+      var startTime = document.getElementById("start-time").value;
+      var endTime = document.getElementById("end-time").value;
+
+      // Convert start time and end time to Date objects
+      var start = new Date("2000-01-01T" + startTime);
+      var end = new Date("2000-01-01T" + endTime);
+
+      // Calculate the difference in milliseconds
+      var diff = end - start;
+
+      // Calculate the hours and minutes
+      var hours = Math.floor(diff / (1000 * 60 * 60));
+      var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+      // Update the total work hours field
+      document.getElementById("total-work-hours").textContent = hours + " hours " + minutes + " minutes";
+    }
+
+    // JavaScript code for automatically selecting Skills and Interests checkboxes
+    function toggleCheckbox1() {
+      var checkbox1 = document.getElementById("checkbox1");
+      var checkbox2 = document.getElementById("checkbox2");
+      var checkbox3 = document.getElementById("checkbox3");
+
+      checkbox2.checked = checkbox1.checked;
+      checkbox3.checked = checkbox1.checked;
+    }
+    function validateInput(element) {
+      var inputValue = element.value;
+      var validCharacters = /^[A-Za-z]+$/;
+
+      if (!validCharacters.test(inputValue)) {
+        element.setCustomValidity("Only alphabetic characters are allowed.");
+      } else {
+        element.setCustomValidity("");
+      }
+    }
+
+    // JavaScript code for form submission and refreshing the form
+    function submitForm() {
+      var serialNumber = document.getElementById("serial-number").value;
+      var name = document.getElementById("name").value;
+      if (!/^[a-zA-Z]+$/.test(name) || name.length > 20) {
+        alert("Name should contain only alphabets and be less than or exactly 20 characters.");
+        return;
+      }
+      var email = document.getElementById("email").value;
+
+      // Check the length and "@" symbol in the email
+      if (email.length > 20 || !email.includes("@")) {
+        alert("Email should be less than or exactly 20 characters and include the '@' symbol.");
+        return;
+      }
+    
+      var gender = document.getElementById("gender").value;
+      var role = document.getElementById("role").value;
+      if (!/^[a-zA-Z]+$/.test(role) || role.length > 20) {
+        alert("Role should contain only alphabets and be less than or exactly 20 characters.");
+        return;
+      }
+      var experienceYears = document.getElementById("experience-years").value;
+      var experienceMonths = document.getElementById("experience-months").value;
+
+      var department = document.getElementById("department").value;
+      if (!/^[a-zA-Z]+$/.test(department) || department.length > 20) {
+        alert("Department should contain only alphabets and be less than or exactly 20 characters.");
+        return;
+      }
+      var file = document.getElementById("file").value;
+      var image = document.getElementById("image").value;
+      var skills = [];
+      var skillsCheckboxes = document.getElementsByName("skills");
+      for (var i = 0; i < skillsCheckboxes.length; i++) {
+        if (skillsCheckboxes[i].checked) {
+          skills.push(skillsCheckboxes[i].value);
+        }
+      }
+      var interests = [];
+      var interestsCheckboxes = document.getElementsByName("interests");
+      for (var i = 0; i < interestsCheckboxes.length; i++) {
+        if (interestsCheckboxes[i].checked) {
+          interests.push(interestsCheckboxes[i].value);
+        }
+      }
+      var startTime = document.getElementById("start-time").value;
+      var endTime = document.getElementById("end-time").value;
+      var totalWorkHours = document.getElementById("total-work-hours").textContent;
+
+      // Create a new row for the employee details
+      var newRow = document.createElement("tr");
+      newRow.innerHTML = "<td>" + serialNumber + "</td><td>" + name + "</td><td>" + email + "</td><td>" + gender + "</td><td>" + role + "</td><td>" + experienceYears + " years " + experienceMonths + " months" + "</td><td>" + department + "</td><td>" + file + "</td><td>" + image + "</td><td>" + skills.join(", ") + "</td><td>" + interests.join(", ") + "</td><td>" + startTime + "</td><td>" + endTime + "</td><td>" + totalWorkHours + "</td>";
+
+      // Append the new row to the table
+      var tableBody = document.getElementById("display-table-body");
+      tableBody.appendChild(newRow);
+      var successPage = "<!DOCTYPE html>";
+  successPage += "<html>";
+  successPage += "<head>";
+  successPage += "<title>Submission Successful</title>";
+  successPage += "</head>";
+  successPage += "<body>";
+  successPage += "<h1>Submission Successful</h1>";
+  successPage += "<p>Your details have been submitted successfully:</p>";
+  successPage += "<table>";
+  successPage += "<tr><td>Serial No:</td><td>" + serialNumber + "</td></tr>";
+  successPage += "<tr><td>Name:</td><td>" + name + "</td></tr>";
+  successPage += "<tr><td>Email:</td><td>" + email + "</td></tr>";
+  successPage += "<tr><td>Gender:</td><td>" + gender + "</td></tr>";
+  successPage += "<tr><td>Role:</td><td>" + role + "</td></tr>";
+  successPage += "<tr><td>Experience:</td><td>" + experienceYears + " years " + experienceMonths + " months" + "</td></tr>";
+  successPage += "<tr><td>Department:</td><td>" + department + "</td></tr>";
+  successPage += "<tr><td>Skills:</td><td>" + skills.join(", ") + "</td></tr>";
+  successPage += "<tr><td>Interests:</td><td>" + interests.join(", ") + "</td></tr>";
+  successPage += "<tr><td>Start Time:</td><td>" + startTime + "</td></tr>";
+  successPage += "<tr><td>End Time:</td><td>" + endTime + "</td></tr>";
+  successPage += "<tr><td>Total Work Hours:</td><td>" + totalWorkHours + "</td></tr>";
+  successPage += "</table>";
+  successPage += "</body>";
+  successPage += "</html>";
+
+  // Open the generated success page in a new window or tab
+  var successWindow = window.open("", "_blank");
+  successWindow.document.write(successPage);
+
+      // Reset the form
+      document.getElementById("employee-form").reset();
+    }
+
+    // JavaScript code for refreshing the employee table
+    function refreshTable() {
+      document.getElementById("employee-form").reset();
+      window.location.href = 'success.html';
+      
+  
+      // Clear any calculated work hours
+      document.getElementById("total-work-hours").textContent = "";
+    }
+  </script>
+</head>
+<body>
+  <form id="employee-form">
+    <table>
+      <tr>
+        <td>Serial No:</td>
+        <td><input type="number" id="serial-number" placeholder="Enter serial number" min="1"></td>
+      </tr>
+      <tr>
+        <td>
+          <input type="checkbox" id="checkbox1" onchange="toggleCheckbox1()"> Personal Details
+        </td>
+        <td>
+          <table>
+            <tbody>
+              <tr>
+                <td>Name:</td>
+                <td><input type="text" id="name" placeholder="Enter name"  maxlength="20" oninput="validateInput(this)"> </td>
+              </tr>
+              <tr>
+                <td>Email:</td>
+                <td><input type="text" id="email" placeholder="Enter email" maxlength="20"></td>
+              </tr>
+              <tr>
+                <td>Gender:</td>
+                <td>
+                  <select id="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>Role:</td>
+                <td><input type="text" id="role" placeholder="Enter role" maxlength="20" oninput="validateInput(this)"> </td>
+              </tr>
+              <tr>
+                <td>Experience:</td>
+                <td>
+                  <input type="number" id="experience-years" placeholder="Years" min="0">
+                  <input type="number" id="experience-months" placeholder="Months" min="0" max="11">
+                </td>
+              </tr>
+              <tr>
+                <td>Department:</td>
+                <td><input type="text" id="department" placeholder="Enter department" maxlength="20" oninput="validateInput(this)"></td>
+              </tr>
+              <tr>
+                <td>Choose File:</td>
+                <td><input type="file" id="file"></td>
+              </tr>
+              <tr>
+                <td>Choose Image:</td>
+                <td><input type="file" id="image"></td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" id="checkbox2"> Skills
+                </td>
+                <td>
+                  <input type="checkbox" name="skills" value="Leadership"> Leadership<br>
+                  <input type="checkbox" name="skills" value="Communication"> Communication<br>
+                  <input type="checkbox" name="skills" value="Sports"> Sports<br>
+                  <input type="checkbox" name="skills" value="Other"> Other
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <input type="checkbox" id="checkbox3"> Interests
+                </td>
+                <td>
+                  <input type="checkbox" name="interests" value="Hobbies"> Hobbies<br>
+                  <input type="checkbox" name="interests" value="Reading"> Reading<br>
+                  <input type="checkbox" name="interests" value="Music"> Music<br>
+                  <input type="checkbox" name="interests" value="Travel"> Travel
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>Start Time:</td>
+        <td><input type="time" id="start-time"></td>
+      </tr>
+      <tr>
+        <td>End Time:</td>
+        <td><input type="time" id="end-time"></td>
+      </tr>
+      <tr>
+        <td>Total Work Hours:</td>
+        <td id="total-work-hours"></td>
+      </tr>
+    </table>
+
+    <div class="submit-container">
+      <button type="button" onclick="calculateWorkHours()">Calculate Work Hours</button>
+      <button type="button" onclick="submitForm()">Submit</button>
+      <button type="button" onclick="refreshTable()">Refresh Table</button>
+    </div>
+  </form>
+
+  <h2>Employee Database</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Serial No</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Role</th>
+        <th>Experience</th>
+        <th>Department</th>
+        <th>File</th>
+        <th>Image</th>
+        <th>Skills</th>
+        <th>Interests</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Total Work Hours</th>
+      </tr>
+    </thead>
+    <tbody id="display-table-body">
+      <!-- Employee details will be added dynamically -->
+    </tbody>
+  </table>
+</body>
+</html>
